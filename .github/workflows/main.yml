@@ -1,0 +1,36 @@
+name: Daily Health Report
+
+on:
+  schedule:
+    - cron: '0 23 * * *'  # 每天北京时间早 7 点跑（UTC 23:00 = 北京 07:00）
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  generate-report:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install dependencies
+      run: |
+        pip install garminconnect anthropic
+        
+    - name: Run script
+      env:
+        GARMIN_EMAIL: ${{ secrets.GARMIN_EMAIL }}
+        GARMIN_PASSWORD: ${{ secrets.GARMIN_PASSWORD }}
+        CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
+      run: python generate_report.py
+      
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./output
