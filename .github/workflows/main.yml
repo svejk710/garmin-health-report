@@ -11,7 +11,7 @@ jobs:
       contents: read
       pages: write
       id-token: write
-    runs-on: ubuntu-latestruns-on: ubuntu-latest
+    runs-on: ubuntu-latest
     
     steps:
     - name: Checkout code
