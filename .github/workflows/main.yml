@@ -7,7 +7,11 @@ on:
 
 jobs:
   generate-report:
-    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    runs-on: ubuntu-latestruns-on: ubuntu-latest
     
     steps:
     - name: Checkout code
